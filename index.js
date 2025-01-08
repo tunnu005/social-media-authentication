@@ -20,13 +20,13 @@ const app = express()
 
 
 
-// app.get('/emailsending',async(req,res)=>{
-//     const users = await User.find({}, { email: 1});
-//     const emails = users.map(user => user.email);
+app.get('/emailsending',async(req,res)=>{
+    const users = await User.find({}, { email: 1});
+    const emails = users.map(user => user.email);
 
-//     await sendMail(emails, "service active")
-//     res.send(`email sent successfully to ${emails}`)
-// })
+    await sendMail(emails, "service active")
+    res.send(`email sent successfully to ${emails}`)
+})
 
 cron.schedule("0 7 * * *", async () => {
 
@@ -34,6 +34,7 @@ cron.schedule("0 7 * * *", async () => {
     const emails = users.map(user => user.email);
 
     sendMail(emails, "service start")
+    
 
 })
 
