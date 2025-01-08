@@ -170,7 +170,7 @@ export const sendMail = async(emails, text) => {
     let mailDetails = {
         from: "u21cs067@coed.svnit.ac.in",
         to: emails,
-        subject: "Test mail using Cron job",
+        subject: "job start",
         text: text
     };
 
