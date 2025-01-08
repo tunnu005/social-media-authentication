@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
 import cloudinary from './cloudconfig.js';
-
+import nodemailer from "nodemailer"
 dotenv.config()
 
 
@@ -28,7 +28,7 @@ export const login = async (req, res) => {
         // console.log('token at login',token);
         console.log("process.env.JWT_SECRET : ", process.env.NODE_ENV === 'production')
         res.cookie(
-            "token", token,
+            "Buzzytoken", token,
             {
                 httpOnly: true,
                 expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
@@ -150,10 +150,40 @@ export const createUser = async (req, res) => {
 export const verification = (req, res) => {
 
     console.log('hit')
-    const { token } = req.cookies
-    console.log('token at verification', token);
-    if (!token) return res.status(400).json({ message: 'User Not Login', success: false });
-    const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+    const { Buzzytoken } = req.cookies
+    console.log('token at verification', Buzzytoken);
+    if (!Buzzytoken) return res.status(400).json({ message: 'User Not Login', success: false });
+    const decodedData = jwt.verify(Buzzytoken, process.env.JWT_SECRET);
     res.status(200).json({ message: 'User Login', success: true, user: decodedData.payload });
 }
 
+export const sendMail = async(emails, text) => {
+    let mailTransporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "u21cs067@coed.svnit.ac.in",
+            pass: process.env.PASSWORD
+        }
+    });
+
+
+    let mailDetails = {
+        from: "u21cs067@coed.svnit.ac.in",
+        to: emails,
+        subject: "Test mail using Cron job",
+        text: text
+    };
+
+
+
+   await mailTransporter.sendMail(mailDetails,
+        function (err, data) {
+            if (err) {
+                console.log("Error Occurs", err);
+            } else {
+                console.log("Email sent successfully");
+            }
+        });
+
+
+}

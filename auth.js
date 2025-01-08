@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 dotenv.config();
 const Auth = (req, res, next) => {
     // Get the token from cookies
-    const token = req.cookies.token;
+    const token = req.cookies.Buzzytoken;
     
     console.log('token at auth',token)
     if (!token) {
