@@ -31,9 +31,10 @@ app.get('/emailsending',async(req,res)=>{
 cron.schedule("0 7 * * *", async () => {
 
     const users = await User.find({}, { email: 1 });
+    console.log("data fetched successfully")
     const emails = users.map(user => user.email);
 
-    sendMail(emails, "service start")
+    sendMail(emails, "your buzzy App services are start")
     
 
 })
@@ -44,7 +45,7 @@ cron.schedule("0 19 * * *", async () => {
     const users = await User.find({}, { email: 1 });
     const emails = users.map(user => user.email);
 
-    sendMail(emails, "service stop")
+    sendMail(emails, "yout buzzy App services are stop")
 })
 
 app.use(helmet())
